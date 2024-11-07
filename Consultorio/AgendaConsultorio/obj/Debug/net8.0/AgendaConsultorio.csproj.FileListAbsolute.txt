@@ -1,0 +1,15 @@
+/home/theghhz/Área de Trabalho/residencia-em-software/Consultorio/AgendaConsultorio/obj/Debug/net8.0/AgendaConsultorio.GeneratedMSBuildEditorConfig.editorconfig
+/home/theghhz/Área de Trabalho/residencia-em-software/Consultorio/AgendaConsultorio/obj/Debug/net8.0/AgendaConsultorio.AssemblyInfoInputs.cache
+/home/theghhz/Área de Trabalho/residencia-em-software/Consultorio/AgendaConsultorio/obj/Debug/net8.0/AgendaConsultorio.AssemblyInfo.cs
+/home/theghhz/Área de Trabalho/residencia-em-software/Consultorio/AgendaConsultorio/obj/Debug/net8.0/AgendaConsultorio.csproj.CoreCompileInputs.cache
+/home/theghhz/Área de Trabalho/residencia-em-software/Consultorio/AgendaConsultorio/obj/Debug/net8.0/AgendaConsultorio.sourcelink.json
+/home/theghhz/Área de Trabalho/residencia-em-software/Consultorio/AgendaConsultorio/bin/Debug/net8.0/AgendaConsultorio
+/home/theghhz/Área de Trabalho/residencia-em-software/Consultorio/AgendaConsultorio/bin/Debug/net8.0/AgendaConsultorio.deps.json
+/home/theghhz/Área de Trabalho/residencia-em-software/Consultorio/AgendaConsultorio/bin/Debug/net8.0/AgendaConsultorio.runtimeconfig.json
+/home/theghhz/Área de Trabalho/residencia-em-software/Consultorio/AgendaConsultorio/bin/Debug/net8.0/AgendaConsultorio.dll
+/home/theghhz/Área de Trabalho/residencia-em-software/Consultorio/AgendaConsultorio/bin/Debug/net8.0/AgendaConsultorio.pdb
+/home/theghhz/Área de Trabalho/residencia-em-software/Consultorio/AgendaConsultorio/obj/Debug/net8.0/AgendaConsultorio.dll
+/home/theghhz/Área de Trabalho/residencia-em-software/Consultorio/AgendaConsultorio/obj/Debug/net8.0/refint/AgendaConsultorio.dll
+/home/theghhz/Área de Trabalho/residencia-em-software/Consultorio/AgendaConsultorio/obj/Debug/net8.0/AgendaConsultorio.pdb
+/home/theghhz/Área de Trabalho/residencia-em-software/Consultorio/AgendaConsultorio/obj/Debug/net8.0/AgendaConsultorio.genruntimeconfig.cache
+/home/theghhz/Área de Trabalho/residencia-em-software/Consultorio/AgendaConsultorio/obj/Debug/net8.0/ref/AgendaConsultorio.dll

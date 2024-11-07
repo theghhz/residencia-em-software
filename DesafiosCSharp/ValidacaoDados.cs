@@ -8,8 +8,6 @@ public class ValidacaoDados{
     public char EstadoCivil { get; private set; }
     public int Dependentes { get; private set; }
 
-
-
     public void LerDados(){
         Nome = LerNome();
         CPF = LerCPF();
