@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 public class ValidacaoDados
 {
-    private static bool ValidarCpf(string CPF){
+    public static bool ValidarCPF(string CPF){
         if(CPF.Length != 11){
             return false;
         }
@@ -52,55 +52,24 @@ public class ValidacaoDados
         return CPFSubstring == CPF;
     }
 
-    public static string LerCPF(){
-        string CPF;
-        Console.Write("\nDigite o CPF: ");
-
-        CPF = Console.ReadLine();
-
-        if(!ValidarCpf(CPF)){
-            return null;
-        }
-        
-        return CPF;
-    }
-
-    public static string LerNome(){
-        
-        string nome;
-        
-        Console.Write("Nome: ");
-        nome = Console.ReadLine();
-
+    public static string ValidarNome(string nome){
+    
         if(nome.Length < 5){
-            return null;
+           
+            nome = string.Empty;
         }
-        
+
         return nome;
     }
 
-    public static DateTime LerDataNascimento(){
-        DateTime dataNascimento;
-        
-        Console.Write("Data de Nascimento: ");
-        string data = Console.ReadLine();
-        if (string.IsNullOrEmpty(data))
-        {
-            Console.WriteLine("Data de nascimento inválida");
-            return DateTime.MinValue;
-        }
-        dataNascimento = DateTime.Parse(data);
+    public static bool ValidarDataNascimento(DateTime dataNascimento){
 
-        if((DateTime.Now.Year - dataNascimento.Year) < 13){
-            Console.WriteLine("Erro: paciente deve ter pelo menos 13 anos.");
-            return DateTime.MinValue;
-        }
-
-        if(dataNascimento > DateTime.Now){
-            Console.WriteLine("Data de nascimento inválida");
-            return DateTime.MinValue;
-        }
-                
-        return dataNascimento;
+        if(dataNascimento > DateTime.Now)
+            return false;
+            
+        if((DateTime.Now.Year - dataNascimento.Year) > 130)
+            return false;
+            
+        return true;
     }
 }

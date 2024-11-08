@@ -1,128 +1,108 @@
-    public class ControleConsultorio {
+using System.Reflection.Metadata;
+
+public class ControleConsultorio {
     private static Dictionary<string, Paciente> Pacientes = new Dictionary<string, Paciente>();
     private static List<Agendamento> Agenda = new List<Agendamento>();
 
-    public static void CadastrarPaciente()
+    public static void CadastrarPaciente(string nome, string cpf, DateTime dataNascimento)
     {
-        string cpf = ValidacaoDados.LerCPF();
-        
-        if (cpf == null)
-        {
-            Console.WriteLine("\nCPF inválido. Cadastro cancelado.");
-            return ;
-        }
-
-        if (Pacientes.ContainsKey(cpf))
-        {
-            Console.WriteLine("\nCPF já cadastrado. Cadastro cancelado.");
-            return ;
-        }
-
-        string nome = ValidacaoDados.LerNome();
-        if (string.IsNullOrEmpty(nome))
-        {
-            Console.WriteLine("\nNome inválido. Cadastro cancelado.");
-            return ;
-        }
-
-        DateTime dataNascimento = ValidacaoDados.LerDataNascimento();
-        if (dataNascimento == DateTime.MinValue)
-        {
-            Console.WriteLine("\nCadastro cancelado.");
-            return;
-        }
-
         Paciente paciente = new Paciente(nome, cpf, dataNascimento);
         Pacientes.Add(cpf, paciente);
-        Console.WriteLine("\nPaciente cadastrado com sucesso.");
+
     }
 
-    public static void ExcluirPaciente() {
-        string cpf = ValidacaoDados.LerCPF();
-        if (Pacientes.TryGetValue(cpf, out Paciente paciente)) {
+    public static string PacienteNome(string nome){
 
-            if (Agenda.TrueForAll(a => a.Data < DateTime.Now)) {
-                Pacientes.Remove(cpf);
-                Console.WriteLine("Paciente excluído com sucesso.");
-            } else {
-                Console.WriteLine("Paciente possui consulta futura agendada e não pode ser excluído.");
-            }
-        } else {
-            Console.WriteLine("Paciente não encontrado.");
-        }
+        ValidacaoDados.ValidarNome(nome);
+
+        if (string.IsNullOrEmpty(nome))
+            return string.Empty;
+        
+        return nome;
     }
 
-    public static void AgendarConsultas(){
-        string cpf = ValidacaoDados.LerCPF();
-        if (Pacientes.TryGetValue(cpf, out Paciente paciente)) {
-            Console.Write("Data da consulta : ");
-            DateTime dataConsulta = DateTime.Parse(Console.ReadLine());
+    public static string PacienteCPF(string CPF){
+        bool cpfValidado = ValidacaoDados.ValidarCPF(CPF);
+        
+        if (!cpfValidado)
+            return string.Empty;
 
-            if(dataConsulta < DateTime.Now){
-                Console.WriteLine("Data inválida.");
-                return;
-            }
+        return CPF;
+    }
+
+    public static DateTime PacienteDataNascimento(string dataNascimento){
+
+        if (string.IsNullOrEmpty(dataNascimento))
+            return DateTime.MinValue;
             
-            Console.Write("Hora Inicial : ");
-            TimeSpan horaInicial = TimeSpan.Parse(Console.ReadLine());
-            Console.Write("Hora Final : ");
-            TimeSpan horaFinal = TimeSpan.Parse(Console.ReadLine());
+        DateTime data = DateTime.Parse(dataNascimento);
 
-            bool horarioOcupado = Agenda.Any(a => a.Data.Date == dataConsulta.Date &&
+        bool dataValidada = ValidacaoDados.ValidarDataNascimento(data);
+        
+        if (!dataValidada)
+            return DateTime.MinValue;
+
+        return data;
+    }
+
+    public static bool ExistePaciente(string CPF){
+        
+        if (Pacientes.ContainsKey(CPF)) 
+            return true;
+        return false;
+
+    }
+    public static bool ExcluirPaciente(string CPF) {
+
+        if(!Pacientes.TryGetValue(CPF, out Paciente paciente) &&
+         !Agenda.Exists(a => a.Paciente == paciente)){
+            return false;
+        }
+
+        Pacientes.Remove(CPF);
+        return true;
+        
+        
+    }
+
+    public static bool AgendarConsultas(string CPF, DateTime dataConsulta, TimeSpan horaInicial, TimeSpan horaFinal) {
+
+        if (Pacientes.TryGetValue(CPF, out Paciente paciente)) {
+           
+            if (horarioDisponivel(horaInicial, horaFinal, dataConsulta)) {
+                return false;
+            }
+
+            Agendamento agendamento = new Agendamento(dataConsulta, horaInicial, horaFinal, paciente);
+            Agenda.Add(agendamento);
+            
+        } 
+
+        return true;
+    }
+
+    private static bool horarioDisponivel(TimeSpan horaInicial, TimeSpan horaFinal, DateTime dataConsulta) {
+        return Agenda.Any(a => a.Data.Date == dataConsulta.Date &&
                                             ((horaInicial >= a.HoraInicial && horaInicial < a.HoraFinal) ||
                                             (horaFinal > a.HoraInicial && horaFinal <= a.HoraFinal) ||
                                             (horaInicial <= a.HoraInicial && horaFinal >= a.HoraFinal)));
-        
-            if (horarioOcupado) {
-                Console.WriteLine("Já existe uma consulta marcada nesse horário.");
-                return;
-            }
-
-            if (horaFinal > horaInicial) {
-                Agendamento agendamento = new Agendamento(dataConsulta, horaInicial, horaFinal, paciente);
-                Agenda.Add(agendamento);
-                Console.WriteLine("Consulta agendada com sucesso.");
-            } else {
-                Console.WriteLine("Horário final deve ser maior que o horário inicial.");
-            }
-        } else {
-            Console.WriteLine("CPF não encontrado.");
-        }
     }
 
-    public static void CancelarAgendamento() {
-        string cpf = ValidacaoDados.LerCPF();
+    public static bool CancelarAgendamento(string CPF, DateTime dataConsulta, TimeSpan horaInicial) {
 
-        if (!Pacientes.TryGetValue(cpf, out Paciente paciente)) {
-            Console.WriteLine("Paciente não encontrado.");
-            return;
+        if (!Pacientes.TryGetValue(CPF, out Paciente paciente)) {
+            return false;
         }
 
-        Console.Write("Data da consulta a ser cancelada: ");
-        DateTime dataConsulta;
-        if (!DateTime.TryParse(Console.ReadLine(), out dataConsulta)) {
-            Console.WriteLine("Data inválida.");
-            return;
-        }
-
-        Console.Write("Hora Inicial da consulta: ");
-        TimeSpan horaInicial;
-        if (!TimeSpan.TryParse(Console.ReadLine(), out horaInicial)) {
-            Console.WriteLine("Hora inicial inválida.");
-            return;
-        }
-
-        
         Agendamento agendamentoParaCancelar = Agenda.FirstOrDefault(
             a => a.Paciente == paciente && a.Data.Date == dataConsulta.Date && a.HoraInicial == horaInicial
         );
 
         if (agendamentoParaCancelar != null) {
             Agenda.Remove(agendamentoParaCancelar);
-            Console.WriteLine("Consulta cancelada com sucesso.");
-        } else {
-            Console.WriteLine("Consulta não encontrada para a data e horário informados.");
-        }
+            return true;
+        } 
+        return false;
     }
 
     public static void ListarPacientesPorCPF(){

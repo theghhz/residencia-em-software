@@ -13,10 +13,83 @@ public class MenuAgenda {
 
         switch (opcao) {
             case 1:
-                ControleConsultorio.AgendarConsultas();
+                Console.WriteLine("\nCPF:");
+                string CPF = Console.ReadLine();
+
+                if(CPF == string.Empty){
+                    Console.WriteLine("CPF inválido\nCPF:");
+                    break;
+                }
+                
+                if(!ControleConsultorio.ExistePaciente(CPF)){
+                    Console.WriteLine("Paciente não encontrado.");
+                    break;
+                }
+                
+                Console.Write("Data da consulta: ");
+                DateTime dataConsulta = DateTime.Parse(Console.ReadLine());
+
+                if(dataConsulta < DateTime.Now){
+                   Console.WriteLine("Data inválida.");
+                   return;
+                }
+
+                Console.Write("Hora Inicial: ");
+                TimeSpan horaInicial = TimeSpan.Parse(Console.ReadLine());
+                Console.Write("Hora Final: ");
+                TimeSpan horaFinal = TimeSpan.Parse(Console.ReadLine());
+
+                if(horaInicial >= horaFinal){
+                    Console.WriteLine("Horário final deve ser maior que o horário inicial.");
+                    return;
+                }
+
+                if(ControleConsultorio.AgendarConsultas(CPF, dataConsulta, horaInicial, horaFinal)){
+                    Console.WriteLine("Consulta agendada com sucesso.");
+                    break;
+                } else {
+                    Console.WriteLine("Já existe uma consulta marcada nesse horário.");
+                
+                }
                 break;
             case 2:
-                ControleConsultorio.CancelarAgendamento();
+                Console.WriteLine("CPF: ");
+
+                string cancelarCPF = Console.ReadLine(); 
+
+                if(cancelarCPF == string.Empty){
+                    Console.WriteLine("CPF inválido\nCPF:");
+                    break;
+                }
+
+                if(!ControleConsultorio.ExistePaciente(cancelarCPF)){
+                    Console.WriteLine("Paciente não encontrado.");
+                    break;
+                }
+
+                Console.Write("Data da consulta: ");
+                DateTime dataConsultaCancelar = DateTime.Parse(Console.ReadLine());
+
+                if(dataConsultaCancelar < DateTime.Now){
+                   Console.WriteLine("Data inválida.");
+                   return;
+                }
+
+                Console.Write("Hora Inicial: ");
+                TimeSpan horaInicialCancelar = TimeSpan.Parse(Console.ReadLine());
+                
+                if (!TimeSpan.TryParse(Console.ReadLine(), out horaInicial)) {
+                    Console.WriteLine("Hora inicial inválida.");
+                    return;
+                }
+
+                if(ControleConsultorio.CancelarAgendamento(cancelarCPF, dataConsultaCancelar, horaInicialCancelar)){
+                    Console.WriteLine("Consulta cancelada com sucesso.");
+                    break;
+                } else {
+                    Console.WriteLine("Consulta não encontrada.");
+                } 
+                
                 break;
             case 3:
                 ControleConsultorio.ListarAgenda();
