@@ -30,19 +30,18 @@ public class ControleConsultorio {
         return CPF;
     }
 
-    public static DateTime PacienteDataNascimento(string dataNascimento){
+    public static DateTime PacienteDataNascimento(DateTime dataNascimento){
 
-        if (string.IsNullOrEmpty(dataNascimento))
+        if(dataNascimento == DateTime.MinValue){
             return DateTime.MinValue;
-            
-        DateTime data = DateTime.Parse(dataNascimento);
-
-        bool dataValidada = ValidacaoDados.ValidarDataNascimento(data);
+        }
+   
+        bool dataValidada = ValidacaoDados.ValidarDataNascimento(dataNascimento);
         
         if (!dataValidada)
             return DateTime.MinValue;
 
-        return data;
+        return dataNascimento;
     }
 
     public static bool ExistePaciente(string CPF){
@@ -53,16 +52,20 @@ public class ControleConsultorio {
 
     }
     public static bool ExcluirPaciente(string CPF) {
+        
+        if(!Pacientes.TryGetValue(CPF, out Paciente paciente)){
+            return false;
+        }
 
-        if(!Pacientes.TryGetValue(CPF, out Paciente paciente) &&
-         !Agenda.Exists(a => a.Paciente == paciente)){
+        List<Agendamento> agendamentoFuturos = ObterAgendamentosFuturosPaciente(paciente);
+
+        if(agendamentoFuturos.Count > 0){
             return false;
         }
 
         Pacientes.Remove(CPF);
+        Agenda.RemoveAll(a => a.Paciente == paciente); //(a => a.Paciente == paciente && a.Data <= DateTime.Now);
         return true;
-        
-        
     }
 
     public static bool AgendarConsultas(string CPF, DateTime dataConsulta, TimeSpan horaInicial, TimeSpan horaFinal) {
@@ -72,7 +75,7 @@ public class ControleConsultorio {
             if (horarioDisponivel(horaInicial, horaFinal, dataConsulta)) {
                 return false;
             }
-
+            
             Agendamento agendamento = new Agendamento(dataConsulta, horaInicial, horaFinal, paciente);
             Agenda.Add(agendamento);
             
@@ -134,23 +137,39 @@ public class ControleConsultorio {
         return Agenda.FindAll(a => a.Paciente == paciente && a.Data > DateTime.Now);
     }
     
-    public static void ListarAgenda()
-    {
+    public static void ListarAgenda(DateTime data, TimeSpan horaInicial)
+    {   
+
         Console.WriteLine("\n\n---------------------------------------------------------------------");
         Console.WriteLine("Data       H.Ini  H.Fim  Tempo Nome                       Dt.Nasc.");
         Console.WriteLine("---------------------------------------------------------------------");
 
-        foreach (var agendamento in Agenda)
-        {
-            var tempo = agendamento.TempoConsulta();
+        var agendamentosFiltrados = Agenda;
 
-            Console.WriteLine("{0:dd/MM/yyyy} {1:hh\\:mm}  {2:hh\\:mm}  {3,5} {4,-25}  {5:dd/MM/yyyy}",
-                agendamento.Data,
-                agendamento.HoraInicial,
-                agendamento.HoraFinal,
-                tempo.ToString(@"hh\:mm"),
-                agendamento.Paciente.Nome.Length > 25 ? agendamento.Paciente.Nome.Substring(0, 25) : agendamento.Paciente.Nome,
-                agendamento.Paciente.DataNascimento);
+        if (data != DateTime.MinValue)
+        {
+            agendamentosFiltrados = Agenda
+            .Where(a => a.Data.Date == data.Date && a.HoraInicial >= horaInicial)
+            .ToList();
+        }
+        if (agendamentosFiltrados.Count == 0)
+        {
+            Console.WriteLine("Nenhum agendamento encontrado para o período especificado.");
+        }
+        else
+        {
+            foreach (var agendamento in agendamentosFiltrados)
+            {
+                var tempo = agendamento.TempoConsulta();
+
+                Console.WriteLine("{0:dd/MM/yyyy} {1:hh\\:mm}  {2:hh\\:mm}  {3,5} {4,-25}  {5:dd/MM/yyyy}",
+                    agendamento.Data,
+                    agendamento.HoraInicial,
+                    agendamento.HoraFinal,
+                    tempo.ToString(@"hh\:mm"),
+                    agendamento.Paciente.Nome.Length > 25 ? agendamento.Paciente.Nome.Substring(0, 25) : agendamento.Paciente.Nome,
+                    agendamento.Paciente.DataNascimento);
+            }
         }
 
         Console.WriteLine("---------------------------------------------------------------------\n");

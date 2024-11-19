@@ -15,7 +15,7 @@ public class MenuCadastroPaciente {
         switch (opcao) {
             case 1:
 
-                Console.WriteLine("\nCPF:");
+                Console.Write("\nCPF:");
                 string CPF = Console.ReadLine();
 
                 ControleConsultorio.PacienteCPF(CPF);
@@ -36,7 +36,7 @@ public class MenuCadastroPaciente {
                     break;
                 }
 
-                Console.WriteLine("\nNome:");
+                Console.Write("\nNome:");
                 string nome = Console.ReadLine();
 
                 ControleConsultorio.PacienteNome(nome);
@@ -49,34 +49,40 @@ public class MenuCadastroPaciente {
                     }
 
                 }while(nome == null);
-
-                Console.WriteLine("\nData de Nascimento: ");
-                string dataNascimento = Console.ReadLine();
-
-                DateTime data = ControleConsultorio.PacienteDataNascimento(dataNascimento);
-
+                
+                Console.Write("Data de Nascimento: ");
+                string dataInput = Console.ReadLine();
+                DateTime dataNascimento;
                 do{
-                    if(data == DateTime.MinValue){
-                        Console.WriteLine("Data de nascimento inválida\nData de Nascimento: ");
-                        dataNascimento = Console.ReadLine();
-                        ControleConsultorio.PacienteDataNascimento(dataNascimento);
-                    }
+            
+                if (!DateTime.TryParseExact(dataInput, "ddMMyyyy", null, System.Globalization.DateTimeStyles.None, out dataNascimento))
+                {
+                    Console.WriteLine("Data inválida. Use o formato DDMMAAAA.");
+                    break;
+                }
+                 
+                if(dataNascimento == DateTime.MinValue){
+                    Console.WriteLine("Data de nascimento inválida\nData de Nascimento: ");
+                    dataInput = Console.ReadLine();
+
+                    ControleConsultorio.PacienteDataNascimento(dataNascimento);
+                }
                     
-                    if((DateTime.Now.Year - data.Year) < 13){
-                        Console.WriteLine("Erro: paciente deve ter pelo menos 13 anos.\nData de Nascimento: ");
-                        return;
-                    }
+                if((DateTime.Now.Year - dataNascimento.Year) < 13){
+                    Console.WriteLine("Erro: paciente deve ter pelo menos 13 anos.\nData de Nascimento: ");
+                    return;
+                }
                     
-                }while(data == DateTime.MinValue);
+                }while(dataNascimento == DateTime.MinValue);
 
                 
-                ControleConsultorio.CadastrarPaciente(nome,CPF,data);
+                ControleConsultorio.CadastrarPaciente(nome,CPF,dataNascimento);
 
                 Console.WriteLine("Paciente cadastrado com sucesso.");
 
                 break;
             case 2:
-                Console.WriteLine("\nCPF:");
+                Console.Write("\nCPF:");
                 string excluirCPF = Console.ReadLine();
 
                 if(excluirCPF == string.Empty){
