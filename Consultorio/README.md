@@ -31,7 +31,7 @@ O projeto está dividido nas seguintes classes principais:
 
 1. Clone o repositório:
   ```bash
-  git clone https://github.com/seuusuario/AgendaConsultorio.git
+  git clone https://github.com/theghhz/residencia-em-software/tree/main/Consultorio
   ```
 
 2. Navegue até o diretório do projeto:
