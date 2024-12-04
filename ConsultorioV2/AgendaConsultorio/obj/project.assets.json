@@ -2567,11 +2567,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/theghhz/Área de Trabalho/residencia-em-software/Consultorio/AgendaConsultorio/AgendaConsultorio.csproj",
+      "projectUniqueName": "/home/theghhz/Área de Trabalho/residencia-em-software/ConsultorioV2/AgendaConsultorio/AgendaConsultorio.csproj",
       "projectName": "AgendaConsultorio",
-      "projectPath": "/home/theghhz/Área de Trabalho/residencia-em-software/Consultorio/AgendaConsultorio/AgendaConsultorio.csproj",
+      "projectPath": "/home/theghhz/Área de Trabalho/residencia-em-software/ConsultorioV2/AgendaConsultorio/AgendaConsultorio.csproj",
       "packagesPath": "/home/theghhz/.nuget/packages/",
-      "outputPath": "/home/theghhz/Área de Trabalho/residencia-em-software/Consultorio/AgendaConsultorio/obj/",
+      "outputPath": "/home/theghhz/Área de Trabalho/residencia-em-software/ConsultorioV2/AgendaConsultorio/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/theghhz/.nuget/NuGet/NuGet.Config"

@@ -24,63 +24,10 @@ public class MenuCadastroPaciente
 
         int opcao = int.Parse(Console.ReadLine());
 
-        //var debud = new Debud();
-        // await debud.ImprimirPacientes();
-
         switch (opcao)
         {
             case 1:
-
-                // Console.Write("\nCPF:");
-
-                // string CPF = ControleDados.PacienteCPF();
-
-                // do{
-                //     if(CPF == string.Empty){
-                //         Console.WriteLine("CPF inválido\nCPF:");
-                //         CPF = ControleDados.PacienteCPF();
-                //     }
-
-                // }while(CPF == string.Empty);
-
-                // if(await _controleConsultorio.ExistePaciente(CPF)){
-                //     Console.WriteLine("CPF já cadastrado.");
-                //     break;
-                // }
-
-                // Console.Write("\nNome:");
-
-                // string nome = ControleDados.PacienteNome();
-
-                // do{
-
-                //     if(nome == null){
-                //         Console.WriteLine("Nome inválido\nNome:");
-                //         nome = ControleDados.PacienteNome();
-                //     }
-
-                // }while(nome == null);
-
-                // Console.Write("Data de Nascimento: ");
-
-                // DateTime dataNascimento = ControleDados.PacienteDataNascimento();
-                // do{
-
-                // if(dataNascimento == DateTime.MinValue){
-                //     Console.WriteLine("Data inválida. Use o formato DDMMAAAA.\nData de Nascimento:");
-                //     dataNascimento = ControleDados.PacienteDataNascimento();
-                // }
-
-                // if((DateTime.Now.Year - dataNascimento.Year) < 13){
-                //     Console.WriteLine("Erro: paciente deve ter pelo menos 13 anos.\nData de Nascimento: ");
-                // }
-
-                // }while(dataNascimento == DateTime.MinValue);
-
-                // await _controleConsultorio.CadastrarPaciente(nome,CPF,dataNascimento);
-
-                // Console.WriteLine("Paciente cadastrado com sucesso.");
-
+            
                 string CPF = ControleDados.PacienteCPF();
 
                 try

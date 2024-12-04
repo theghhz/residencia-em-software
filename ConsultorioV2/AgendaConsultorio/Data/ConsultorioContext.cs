@@ -7,13 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
         public ConsultorioContext(DbContextOptions<ConsultorioContext> options) 
         : base(options) { }
-        
-        // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        // {
-        //     optionsBuilder.UseNpgsql("Host=localhost;Database=consultorio;Username=consultorio_user;Password=Admin@123");
-        // }
 
-        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
